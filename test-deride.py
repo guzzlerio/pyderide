@@ -95,7 +95,18 @@ class TestDeride(unittest.TestCase):
             bob.expect.greet.called.gt(3);
         with self.assertRaises(AssertionError):
             bob.expect.greet.called.gte(4);
-        
+
+    def test_called_never(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+        bob.expect.greet.called.never();
+
+    def test_called_never_fails(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+        bob.greet(Person('alice'))
+        with self.assertRaises(AssertionError):
+            bob.expect.greet.called.never();
 
 if __name__ == '__main__':
     unittest.main()

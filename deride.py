@@ -38,6 +38,9 @@ class CallAssertions:
     def gte(self, number):
         if self.number < number:
             raise self.__times_error__('gte assertion error')
+
+    def never(self):
+        self.times(0)
         
 
 class CallStats:
@@ -52,7 +55,10 @@ class Expectations:
         self.assertions = {}
 
     def __getattr__(self, name):
-        return self.assertions[name]
+        try:
+            return self.assertions[name]
+        except KeyError:
+            return CallStats(0)
 
     def notify(self, invocation):
         name = invocation.name
