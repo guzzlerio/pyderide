@@ -1,4 +1,3 @@
-import json
 from cachetools import hashkey
 
 class ObjectKey:
@@ -6,11 +5,6 @@ class ObjectKey:
     @staticmethod
     def value(*args, **kwds):
         return hashkey(*args, **kwds)
-
-class Object:
-    def to_JSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
-                sort_keys=True, indent=4)
 
 class Invocation:
 
