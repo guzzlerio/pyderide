@@ -11,28 +11,43 @@ class Person(object):
 
 class TestDeride(unittest.TestCase):
 
-    def test_called_times(self):
-        deride = Deride()
+    def setUp(self):
+        self.deride = Deride()
 
-        andy = deride.wrap(Person('Andy'))
-        bob = deride.wrap(Person('Bob'))
+    def test_called_times(self):
+        andy = self.deride.wrap(Person('Andy'))
+        bob = self.deride.wrap(Person('Bob'))
 
         self.assertEquals('hello Bob', andy.greet(bob))
 
         andy.expect.greet.called.times(1)
 
     def test_called_times_fails(self):
-        deride = Deride()
-
-        andy = deride.wrap(Person('Andy'))
-        bob = deride.wrap(Person('Bob'))
+        andy = self.deride.wrap(Person('Andy'))
+        bob = self.deride.wrap(Person('Bob'))
 
         self.assertEquals('hello Bob', andy.greet(bob))
 
         with self.assertRaises(AssertionError):
             andy.expect.greet.called.times(2)
 
+    def test_called_once(self):
+        andy = self.deride.wrap(Person('Andy'))
+        bob = self.deride.wrap(Person('Bob'))
 
+        self.assertEquals('hello Bob', andy.greet(bob))
+
+        andy.expect.greet.called.once()
+
+    def test_called_once_fails(self):
+        andy = self.deride.wrap(Person('Andy'))
+        bob = self.deride.wrap(Person('Bob'))
+
+        self.assertEquals('hello Bob', andy.greet(bob))
+        self.assertEquals('hello Bob', andy.greet(bob))
+
+        with self.assertRaises(AssertionError):
+            andy.expect.greet.called.once()
 
 if __name__ == '__main__':
     unittest.main()

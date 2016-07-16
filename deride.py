@@ -13,6 +13,10 @@ class CallAssertions:
             msg = 'times assertion error. times={calls}' \
                     .format(calls=self.number)
             raise AssertionError(msg)
+
+    def once(self):
+        self.times(1)
+
 class CallStats:
 
     def __init__(self, count):
