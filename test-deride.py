@@ -1,5 +1,5 @@
 import unittest
-from deride import Deride
+from pyderide.deride import Deride
 
 class Logger:
 
