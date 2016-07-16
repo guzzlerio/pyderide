@@ -2,7 +2,13 @@
 
 Python implementation of Deride
 
-The following list is taken from the [Deride](https://github.com/guzzlerio/deride) node.js homepage
+The following list is taken from the [Deride](https://github.com/guzzlerio/deride) node.js homepage.  Some of the methods are marked with **N/A** as they are not applicable for python due to language differences.
+
+## API methods
+
+- [ ] wrap (in progress...)
+- [ ] stub
+- [ ] func
 
 ## Expect methods
 
@@ -18,6 +24,11 @@ The following list is taken from the [Deride](https://github.com/guzzlerio/derid
 - [x] obj.expect.method.called.withArgs(args) (renamed to `with_args`)
 - [ ] obj.expect.method.called.withMatch(pattern) 
 - [x] obj.expect.method.called.matchExactly(args) (renamed to `with_args_strict`)
+
+## Reset methods
+
+- [ ] obj.expect.method.called.reset()
+- [x] obj.called.reset() (renamed to `obj.expect.reset()`)
 
 ## Setup methods
 
