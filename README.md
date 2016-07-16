@@ -30,14 +30,14 @@ The following list is taken from the [Deride](https://github.com/guzzlerio/derid
 - [ ] obj.setup.method.toCallbackWith(args) **N/A**
 - [ ] obj.setup.method.toTimeWarp(milliseconds) **N/A**
 - [ ] obj.setup.method.when(args|function)
-   - [ ].toDoThis
-   - [x].toReturn
-   - [ ].toRejectWith **N/A**
-   - [ ].toResolveWith **N/A**
-   - [ ].toThrow
-   - [ ].toEmit
-   - [ ].toCallbackWith  **N/A**
-   - [ ].toTimeWarp **N/A**
+   - [ ] .toDoThis
+   - [x] .toReturn
+   - [ ] .toRejectWith **N/A**
+   - [ ] .toResolveWith **N/A**
+   - [ ] .toThrow
+   - [ ] .toEmit
+   - [ ] .toCallbackWith  **N/A**
+   - [ ] .toTimeWarp **N/A**
 - [x] obj.setup.method.toIntercept(func)
 
 
