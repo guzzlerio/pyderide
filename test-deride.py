@@ -187,5 +187,17 @@ class TestDeride(unittest.TestCase):
         with self.assertRaises(AssertionError):
             bob.expect.pay.called.with_args_strict(25.00, alice)
 
+    def test_to_do_this(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+        alice = Person('alice')
+        def shout(other):
+            return 'yo ' + other.name
+
+        bob.setup.greet.to_do_this(shout)
+
+        result = bob.greet(alice)
+        self.assertEquals(result, 'yo alice')
+
 if __name__ == '__main__':
     unittest.main()

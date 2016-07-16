@@ -112,19 +112,50 @@ class Expectations:
 
         self.assertions[name] = CallStats(self.data[name])
 
+class MockActions:
+
+    def __init__(self):
+        self.__action__ = None
+
+    def to_do_this(self, func):
+        self.__action__ = func
+
+    def action(self):
+        return self.__action__
+
+
+class Setup:
+
+    def __init__(self):
+        self.actions = {}
+
+    def __getattr__(self, name):
+        if name not in self.actions:
+            self.actions[name] = MockActions()
+
+        return self.actions[name]
+
+    def action_for(self, name):
+        return self.actions[name].action()
+
 class Wrapper:
 
     def __init__(self, obj):
         self.target = obj
         self.expect = Expectations()
-        self.subscriptions = [self.expect]
+        self.setup = Setup()
 
     def __getattr__(self, name):
         try:
             if not getattr(self.target, name).__call__:
                 raise AttributeError('not a function')
+
             def call(*args, **kwds):
                     func = getattr(self.target, name)
+                    try:
+                        func = self.setup.action_for(name)
+                    except KeyError:
+                        pass
                     self.publish(Invocation(name, *args, **kwds))
                     return func(*args, **kwds)
             return call
@@ -132,8 +163,7 @@ class Wrapper:
             return getattr(self.target, name)
 
     def publish(self, invocation):
-        for subscription in self.subscriptions:
-            subscription.notify(invocation)
+        self.expect.notify(invocation)
 
 class Deride:
 
