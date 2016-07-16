@@ -128,8 +128,14 @@ class MockActions:
                 original(*args, **kwargs)
                 return value
             return override
-
         self.__action__ = return_func
+
+    def to_raise(self, throwable):
+        def raise_func(original):
+            def override(*args, **kwargs):
+                raise throwable
+            return override
+        self.__action__ = raise_func
 
     def action(self, original):
         return self.__action__(original)
