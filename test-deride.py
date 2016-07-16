@@ -67,6 +67,34 @@ class TestDeride(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             andy.expect.greet.called.twice()
+
+    def test_called_range(self):
+        bob = self.deride.wrap(Person('Bob'))
+        alice = Person('Alice')
+        bob.greet(alice)
+        bob.greet(alice)
+        bob.greet(alice)
+
+        bob.expect.greet.called.lt(4);
+        bob.expect.greet.called.lte(3);
+        bob.expect.greet.called.gt(2);
+        bob.expect.greet.called.gte(3);
+
+    def test_called_range_fails(self):
+        bob = self.deride.wrap(Person('Bob'))
+        alice = Person('Alice')
+        bob.greet(alice)
+        bob.greet(alice)
+        bob.greet(alice)
+
+        with self.assertRaises(AssertionError):
+            bob.expect.greet.called.lt(3);
+        with self.assertRaises(AssertionError):
+            bob.expect.greet.called.lte(2);
+        with self.assertRaises(AssertionError):
+            bob.expect.greet.called.gt(3);
+        with self.assertRaises(AssertionError):
+            bob.expect.greet.called.gte(4);
         
 
 if __name__ == '__main__':

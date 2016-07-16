@@ -8,17 +8,37 @@ class CallAssertions:
     def __init__(self, number):
         self.number = number
 
+    def __times_error__(self, msg):
+            msg = '{msg}. times={calls}' \
+                    .format(msg=msg, calls=self.number)
+            return AssertionError(msg)
+
     def times(self, number):
         if self.number != number:
-            msg = 'times assertion error. times={calls}' \
-                    .format(calls=self.number)
-            raise AssertionError(msg)
+            raise self.__times_error__('times assertion error')
 
     def once(self):
         self.times(1)
 
     def twice(self):
         self.times(2)
+
+    def lt(self, number):
+        if self.number >= number:
+            raise self.__times_error__('lt assertion error')
+
+    def lte(self, number):
+        if self.number > number:
+            raise self.__times_error__('lte assertion error')
+
+    def gt(self, number):
+        if self.number <= number:
+            raise self.__times_error__('gt assertion error')
+
+    def gte(self, number):
+        if self.number < number:
+            raise self.__times_error__('gte assertion error')
+        
 
 class CallStats:
 
