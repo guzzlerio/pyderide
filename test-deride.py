@@ -242,6 +242,19 @@ class TestDeride(unittest.TestCase):
         self.assertEquals(result, 'hello alice')
         self.assertTrue(Logger.has_message('something'))
 
+    def test_specific_to_return(self):
+        bob = Person('bob')
+        alice = Person('alice')
+        carol = Person('carol')
+        
+        bob = self.deride.wrap(bob)
+        bob.setup.greet.when(carol).to_return('yo yo yo')
+
+        self.assertEquals(bob.greet(alice), 'hello alice')
+
+        self.assertEquals(bob.greet(carol), 'yo yo yo')
+
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,9 +1,28 @@
+import json
+from cachetools import hashkey
+
+class ObjectKey:
+
+    @staticmethod
+    def value(*args, **kwds):
+        return hashkey(*args, **kwds)
+
+class Object:
+    def to_JSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+                sort_keys=True, indent=4)
+
 class Invocation:
 
     def __init__(self, name, *args, **kwargs):
         self.name = name
         self.args = args
         self.kwargs = kwargs
+
+class Arguments:
+    def __init__(self, args, kwds):
+        self.args = args
+        self.kwds = kwds
 
 class CallAssertions:
 
@@ -115,7 +134,13 @@ class Expectations:
 class MockActions:
 
     def __init__(self):
-        self.__action__ = None
+        self.__action__ = self.original_func
+        self.specifics = {}
+
+    def original_func(self, original):
+        def override(*args, **kwargs):
+            return original(*args, **kwargs)
+        return override 
 
     def to_do_this(self, func):
         def to_do_func(original):
@@ -146,8 +171,20 @@ class MockActions:
             return override
         self.__action__ = intercept_func
 
-    def action(self, original):
+    def action(self, original, *args, **kwds):
+        try:
+            key = ObjectKey.value(*args, **kwds)
+            result =  self.specifics[key].action(original, *args, **kwds)
+            return result
+        except KeyError:
+            pass
+        
         return self.__action__(original)
+
+    def when(self, *args, **kwds):
+        key = ObjectKey.value(*args, **kwds)
+        self.specifics[key] = MockActions()
+        return self.specifics[key]
 
 
 class Setup:
@@ -161,8 +198,8 @@ class Setup:
 
         return self.actions[name]
 
-    def action_for(self, name, original):
-        return self.actions[name].action(original)
+    def action_for(self, name, original, *args, **kwds):
+        return self.actions[name].action(original, *args, **kwds)
 
 class Wrapper:
 
@@ -179,7 +216,7 @@ class Wrapper:
             def call(*args, **kwds):
                     func = getattr(self.target, name)
                     try:
-                        func = self.setup.action_for(name, func)
+                        func = self.setup.action_for(name, func, *args, **kwds)
                     except KeyError:
                         pass
                     self.publish(Invocation(name, *args, **kwds))
