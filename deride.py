@@ -53,6 +53,21 @@ class CallAssertions:
                     if invocation_arg == arg:
                         return
         raise AssertionError('invocation matching single argument not found')
+
+    def with_args(self, *args):
+        for invocation in self.invocations:
+            results=[]
+            for arg in args:
+                found=False
+                for invocation_arg in invocation.args:
+                    if invocation_arg == arg:
+                        found=True
+                        break
+                results = results + [found]
+            if all(results):
+                return
+
+        raise AssertionError('invocation matching arguments not found')
         
 
 class CallStats:

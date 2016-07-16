@@ -9,6 +9,14 @@ class Person(object):
     def greet(self, other):
         return 'hello ' + other.name
 
+    def pay(self, other, amount):
+        other.credit_with(amount)
+
+    def credit_with(self, amount):
+        pass
+
+
+
 class TestDeride(unittest.TestCase):
 
     def setUp(self):
@@ -140,6 +148,25 @@ class TestDeride(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             bob.expect.greet.called.with_arg(Person('jeremy'))
+
+    def test_with_args(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+
+        alice = Person('alice')
+        bob.pay(alice, 25.00)
+
+        bob.expect.pay.called.with_args(alice, 25.00)
+
+    def test_with_args_fails(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+
+        alice = Person('alice')
+        bob.pay(alice, 25.00)
+
+        with self.assertRaises(AssertionError):
+            bob.expect.pay.called.with_args(alice, 35.00)
 
 if __name__ == '__main__':
     unittest.main()
