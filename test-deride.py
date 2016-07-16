@@ -108,5 +108,18 @@ class TestDeride(unittest.TestCase):
         with self.assertRaises(AssertionError):
             bob.expect.greet.called.never();
 
+    def test_reset_call_counts(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+        alice = Person('alice')
+        bob.greet(alice)
+
+        bob.expect.greet.called.once()
+
+        bob.expect.reset()
+
+        bob.expect.greet.called.never()
+
+
 if __name__ == '__main__':
     unittest.main()

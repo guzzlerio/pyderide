@@ -60,6 +60,9 @@ class Expectations:
         except KeyError:
             return CallStats(0)
 
+    def reset(self):
+        self.assertions = {}
+
     def notify(self, invocation):
         name = invocation.name
         if name not in self.data:
