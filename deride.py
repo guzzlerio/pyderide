@@ -1,12 +1,15 @@
 class Invocation:
 
-    def __init__(self, name):
+    def __init__(self, name, *args, **kwargs):
         self.name = name
+        self.args = args
+        self.kwargs = kwargs
 
 class CallAssertions:
 
-    def __init__(self, number):
-        self.number = number
+    def __init__(self, invocations):
+        self.number = len(invocations)
+        self.invocations = invocations
 
     def __times_error__(self, msg):
             msg = '{msg}. times={calls}' \
@@ -41,12 +44,21 @@ class CallAssertions:
 
     def never(self):
         self.times(0)
+
+    #TODO: Make this more pythonic using list comprehensions and predicates
+    def with_arg(self, arg):
+        for invocation in self.invocations:
+            if len(invocation.args) == 1:
+                for invocation_arg in invocation.args:
+                    if invocation_arg == arg:
+                        return
+        raise AssertionError('invocation matching single argument not found')
         
 
 class CallStats:
 
-    def __init__(self, count):
-        self.called = CallAssertions(count)
+    def __init__(self, invocations):
+        self.called = CallAssertions(invocations)
 
 class Expectations:
 
@@ -58,17 +70,19 @@ class Expectations:
         try:
             return self.assertions[name]
         except KeyError:
-            return CallStats(0)
+            return CallStats([])
 
     def reset(self):
         self.assertions = {}
 
     def notify(self, invocation):
         name = invocation.name
-        if name not in self.data:
-            self.data[name] = 0
 
-        self.data[name] = self.data[name] + 1
+        if name not in self.data:
+            self.data[name] = []
+
+        self.data[name] = self.data[name] + [invocation]
+
         self.assertions[name] = CallStats(self.data[name])
 
 class Wrapper:
@@ -84,7 +98,7 @@ class Wrapper:
                 raise AttributeError('not a function')
             def call(*args, **kwds):
                     func = getattr(self.target, name)
-                    self.publish(Invocation(name))
+                    self.publish(Invocation(name, *args, **kwds))
                     return func(*args, **kwds)
             return call
         except AttributeError:

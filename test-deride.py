@@ -120,6 +120,26 @@ class TestDeride(unittest.TestCase):
 
         bob.expect.greet.called.never()
 
+    def test_with_arg(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+
+        alice = Person('alice')
+        bob.greet(alice)
+        bob.greet(bob)
+
+        bob.expect.greet.called.with_arg(bob)
+
+    def test_with_arg_fails(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+
+        alice = Person('alice')
+        bob.greet(alice)
+        bob.greet(bob)
+
+        with self.assertRaises(AssertionError):
+            bob.expect.greet.called.with_arg(Person('jeremy'))
 
 if __name__ == '__main__':
     unittest.main()
