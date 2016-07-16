@@ -137,6 +137,15 @@ class MockActions:
             return override
         self.__action__ = raise_func
 
+    def to_intercept_with(self, func):
+        def intercept_func(original):
+            def override(*args, **kwargs):
+                func(*args, **kwargs)
+                return original(*args, **kwargs)
+            
+            return override
+        self.__action__ = intercept_func
+
     def action(self, original):
         return self.__action__(original)
 

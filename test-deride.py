@@ -1,6 +1,18 @@
 import unittest
 from deride import Deride
 
+class Logger:
+
+    @staticmethod
+    def log(msg):
+        Logger.messages.append(msg)
+
+    @staticmethod
+    def has_message(msg):
+        return msg in Logger.messages
+
+Logger.messages = []
+
 class Person(object):
 
     def __init__(self, name):
@@ -215,6 +227,20 @@ class TestDeride(unittest.TestCase):
 
         with self.assertRaises(StandardError):
             bob.greet(alice)
+
+    def test_to_intercept_with(self):
+        bob = Person('bob')
+        alice = Person('alice')
+        bob = self.deride.wrap(bob)
+
+        def intercept(*args, **kwargs):
+            Logger.log('something')
+
+        bob.setup.greet.to_intercept_with(intercept)
+        result = bob.greet(alice)
+
+        self.assertEquals(result, 'hello alice')
+        self.assertTrue(Logger.has_message('something'))
 
 
 if __name__ == '__main__':
