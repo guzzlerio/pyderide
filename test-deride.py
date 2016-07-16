@@ -199,5 +199,13 @@ class TestDeride(unittest.TestCase):
         result = bob.greet(alice)
         self.assertEquals(result, 'yo alice')
 
+    def test_to_return(self):
+        bob = Person('bob')
+        alice = Person('alice')
+        bob = self.deride.wrap(bob)
+        bob.setup.greet.to_return('foobar')
+        result = bob.greet(alice)
+        self.assertEquals(result, 'foobar')
+
 if __name__ == '__main__':
     unittest.main()

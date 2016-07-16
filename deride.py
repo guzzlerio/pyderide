@@ -118,10 +118,21 @@ class MockActions:
         self.__action__ = None
 
     def to_do_this(self, func):
-        self.__action__ = func
+        def to_do_func(original):
+            return func
+        self.__action__ = to_do_func
 
-    def action(self):
-        return self.__action__
+    def to_return(self, value):
+        def return_func(original):
+            def override(*args, **kwargs):
+                original(*args, **kwargs)
+                return value
+            return override
+
+        self.__action__ = return_func
+
+    def action(self, original):
+        return self.__action__(original)
 
 
 class Setup:
@@ -135,8 +146,8 @@ class Setup:
 
         return self.actions[name]
 
-    def action_for(self, name):
-        return self.actions[name].action()
+    def action_for(self, name, original):
+        return self.actions[name].action(original)
 
 class Wrapper:
 
@@ -153,7 +164,7 @@ class Wrapper:
             def call(*args, **kwds):
                     func = getattr(self.target, name)
                     try:
-                        func = self.setup.action_for(name)
+                        func = self.setup.action_for(name, func)
                     except KeyError:
                         pass
                     self.publish(Invocation(name, *args, **kwds))
