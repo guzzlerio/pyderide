@@ -156,7 +156,7 @@ class TestDeride(unittest.TestCase):
         alice = Person('alice')
         bob.pay(alice, 25.00)
 
-        bob.expect.pay.called.with_args(alice, 25.00)
+        bob.expect.pay.called.with_args(25.00, alice)
 
     def test_with_args_fails(self):
         bob = Person('bob')
@@ -166,7 +166,26 @@ class TestDeride(unittest.TestCase):
         bob.pay(alice, 25.00)
 
         with self.assertRaises(AssertionError):
-            bob.expect.pay.called.with_args(alice, 35.00)
+            bob.expect.pay.called.with_args(35.00, alice)
+
+    def test_with_args_strict(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+
+        alice = Person('alice')
+        bob.pay(alice, 25.00)
+
+        bob.expect.pay.called.with_args_strict(alice, 25.00)
+
+    def test_with_args_strict_fails(self):
+        bob = Person('bob')
+        bob = self.deride.wrap(bob)
+
+        alice = Person('alice')
+        bob.pay(alice, 25.00)
+
+        with self.assertRaises(AssertionError):
+            bob.expect.pay.called.with_args_strict(25.00, alice)
 
 if __name__ == '__main__':
     unittest.main()

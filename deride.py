@@ -49,6 +49,7 @@ class CallAssertions:
     def with_arg(self, arg):
         self.with_args(arg)
 
+    #TODO: Make this more pythonic using list comprehensions and predicates
     def with_args(self, *args):
         for invocation in self.invocations:
             results=[]
@@ -56,6 +57,22 @@ class CallAssertions:
                 found=False
                 for invocation_arg in invocation.args:
                     if invocation_arg == arg:
+                        found=True
+                        break
+                results = results + [found]
+            if all(results):
+                return
+        raise AssertionError('invocation matching arguments not found')
+
+    #TODO: Make this more pythonic using list comprehensions and predicates
+    def with_args_strict(self, *args):
+        for invocation in self.invocations:
+            results=[]
+            for arg in args:
+                found=False
+                for index, item in enumerate(invocation.args):
+                    if len(invocation.args) == len(args) \
+                            and invocation.args[index] == args[index]:
                         found=True
                         break
                 results = results + [found]
