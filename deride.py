@@ -17,6 +17,9 @@ class CallAssertions:
     def once(self):
         self.times(1)
 
+    def twice(self):
+        self.times(2)
+
 class CallStats:
 
     def __init__(self, count):

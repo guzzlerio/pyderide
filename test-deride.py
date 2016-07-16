@@ -49,5 +49,25 @@ class TestDeride(unittest.TestCase):
         with self.assertRaises(AssertionError):
             andy.expect.greet.called.once()
 
+
+    def test_called_twice(self):
+        andy = self.deride.wrap(Person('Andy'))
+        bob = self.deride.wrap(Person('Bob'))
+
+        self.assertEquals('hello Bob', andy.greet(bob))
+        self.assertEquals('hello Bob', andy.greet(bob))
+
+        andy.expect.greet.called.twice()
+
+    def test_called_twice_fails(self):
+        andy = self.deride.wrap(Person('Andy'))
+        bob = self.deride.wrap(Person('Bob'))
+
+        self.assertEquals('hello Bob', andy.greet(bob))
+
+        with self.assertRaises(AssertionError):
+            andy.expect.greet.called.twice()
+        
+
 if __name__ == '__main__':
     unittest.main()
