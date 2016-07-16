@@ -47,12 +47,7 @@ class CallAssertions:
 
     #TODO: Make this more pythonic using list comprehensions and predicates
     def with_arg(self, arg):
-        for invocation in self.invocations:
-            if len(invocation.args) == 1:
-                for invocation_arg in invocation.args:
-                    if invocation_arg == arg:
-                        return
-        raise AssertionError('invocation matching single argument not found')
+        self.with_args(arg)
 
     def with_args(self, *args):
         for invocation in self.invocations:
