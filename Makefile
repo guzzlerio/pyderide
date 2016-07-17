@@ -4,7 +4,7 @@ install:
 	pip install -r requirements.txt
 
 lint:
-	pylint --rcfile pylint.rc deride.py test-deride.py
+	pylint --rcfile pylint.rc deride.py 
 
 test:
 	nosetests
