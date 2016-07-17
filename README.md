@@ -4,13 +4,41 @@ Python implementation of Deride
 
 The following list is taken from the [Deride](https://github.com/guzzlerio/deride) node.js homepage.  Some of the methods are marked with **N/A** as they are not applicable for python due to language differences.
 
-## API methods
+
+## Information
+
+### Contributing
+
+Ensure you run `make` before pushing (comitting really) and also before submitting a pull request.
+
+The `Makefile` will ensure that:
+
+- requirements are installed
+- the tests pass
+- the code is linted
+
+### CI
+
+The following python versions are in scope for this package:
+
+- "2.6"
+- "2.7"
+- "3.2"
+- "3.3"
+- "3.4"
+- "3.5"
+- "3.5-dev" # 3.5 development branch
+- "nightly" # currently points to 3.6-dev
+
+## Project
+
+### API methods
 
 - [ ] wrap (in progress...)
 - [ ] stub
 - [ ] func
 
-## Expect methods
+### Expect methods
 
 - [x] obj.expect.method.called.times(n)
 - [x] obj.expect.method.called.once()
@@ -25,12 +53,12 @@ The following list is taken from the [Deride](https://github.com/guzzlerio/derid
 - [ ] obj.expect.method.called.withMatch(pattern) 
 - [x] obj.expect.method.called.matchExactly(args) (renamed to `with_args_strict`)
 
-## Reset methods
+### Reset methods
 
 - [ ] obj.expect.method.called.reset()
 - [x] obj.called.reset() (renamed to `obj.expect.reset()`)
 
-## Setup methods
+### Setup methods
 
 - [x] obj.setup.method.toDoThis(func) (renamed 
 - [x] obj.setup.method.toReturn(value)

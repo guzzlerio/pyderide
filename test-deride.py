@@ -1,6 +1,7 @@
 import unittest
 from pyderide.deride import Deride
 
+
 class Logger:
 
     @staticmethod
@@ -12,6 +13,7 @@ class Logger:
         return msg in Logger.messages
 
 Logger.messages = []
+
 
 class Person(object):
 
@@ -26,7 +28,6 @@ class Person(object):
 
     def credit_with(self, amount):
         pass
-
 
 
 class TestDeride(unittest.TestCase):
@@ -69,7 +70,6 @@ class TestDeride(unittest.TestCase):
         with self.assertRaises(AssertionError):
             andy.expect.greet.called.once()
 
-
     def test_called_twice(self):
         andy = self.deride.wrap(Person('Andy'))
         bob = self.deride.wrap(Person('Bob'))
@@ -95,10 +95,10 @@ class TestDeride(unittest.TestCase):
         bob.greet(alice)
         bob.greet(alice)
 
-        bob.expect.greet.called.lt(4);
-        bob.expect.greet.called.lte(3);
-        bob.expect.greet.called.gt(2);
-        bob.expect.greet.called.gte(3);
+        bob.expect.greet.called.lt(4)
+        bob.expect.greet.called.lte(3)
+        bob.expect.greet.called.gt(2)
+        bob.expect.greet.called.gte(3)
 
     def test_called_range_fails(self):
         bob = self.deride.wrap(Person('Bob'))
@@ -108,25 +108,25 @@ class TestDeride(unittest.TestCase):
         bob.greet(alice)
 
         with self.assertRaises(AssertionError):
-            bob.expect.greet.called.lt(3);
+            bob.expect.greet.called.lt(3)
         with self.assertRaises(AssertionError):
-            bob.expect.greet.called.lte(2);
+            bob.expect.greet.called.lte(2)
         with self.assertRaises(AssertionError):
-            bob.expect.greet.called.gt(3);
+            bob.expect.greet.called.gt(3)
         with self.assertRaises(AssertionError):
-            bob.expect.greet.called.gte(4);
+            bob.expect.greet.called.gte(4)
 
     def test_called_never(self):
         bob = Person('bob')
         bob = self.deride.wrap(bob)
-        bob.expect.greet.called.never();
+        bob.expect.greet.called.never()
 
     def test_called_never_fails(self):
         bob = Person('bob')
         bob = self.deride.wrap(bob)
         bob.greet(Person('alice'))
         with self.assertRaises(AssertionError):
-            bob.expect.greet.called.never();
+            bob.expect.greet.called.never()
 
     def test_reset_call_counts(self):
         bob = Person('bob')
@@ -203,6 +203,7 @@ class TestDeride(unittest.TestCase):
         bob = Person('bob')
         bob = self.deride.wrap(bob)
         alice = Person('alice')
+
         def shout(other):
             return 'yo ' + other.name
 
@@ -246,14 +247,13 @@ class TestDeride(unittest.TestCase):
         bob = Person('bob')
         alice = Person('alice')
         carol = Person('carol')
-        
+
         bob = self.deride.wrap(bob)
         bob.setup.greet.when(carol).to_return('yo yo yo')
 
         self.assertEquals(bob.greet(alice), 'hello alice')
 
         self.assertEquals(bob.greet(carol), 'yo yo yo')
-
 
 
 if __name__ == '__main__':

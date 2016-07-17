@@ -8,9 +8,15 @@ from cachetools import hashkey
 
 
 class ObjectKey(object):
+    """
+    Utility for generating a key from arguments and keyword arguments
+    """
 
     @staticmethod
     def value(*args, **kwds):
+        """
+        returns the generated hashkey of the *args and **kwds
+        """
         return hashkey(*args, **kwds)
 
 
