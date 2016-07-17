@@ -1,5 +1,5 @@
 import unittest
-from pyderide.deride import Deride
+from pyderide.deride import Deride, ObjectKey
 
 
 class Logger:
@@ -28,6 +28,14 @@ class Person(object):
 
     def credit_with(self, amount):
         pass
+
+
+class TestObjectKey(unittest.TestCase):
+
+    def test_returns_key(self):
+        key1 = ObjectKey.value(1, 2, 3, a=4)
+        key2 = ObjectKey.value(2, 3, 4, a=5)
+        self.assertNotEquals(key1, key2)
 
 
 class TestDeride(unittest.TestCase):
@@ -235,6 +243,7 @@ class TestDeride(unittest.TestCase):
         bob = self.deride.wrap(bob)
 
         def intercept(*args, **kwargs):
+            del args, kwargs
             Logger.log('something')
 
         bob.setup.greet.to_intercept_with(intercept)
@@ -254,6 +263,24 @@ class TestDeride(unittest.TestCase):
         self.assertEquals(bob.greet(alice), 'hello alice')
 
         self.assertEquals(bob.greet(carol), 'yo yo yo')
+
+    def test_specific_to_do_this(self):
+        bob = Person('bob')
+        alice = Person('alice')
+        bob = self.deride.wrap(bob)
+
+        def one_yo(other):
+            return 'yo {name}'.format(name=other.name)
+
+        def two_yo(other):
+            return 'yo yo {name}'.format(name=other.name)
+
+        bob.setup.greet.when(alice).to_do_this(two_yo)
+
+        bob.setup.greet.to_do_this(one_yo)
+
+        self.assertEquals(bob.greet(alice), 'yo yo alice')
+        self.assertEquals(bob.greet(bob), 'yo bob')
 
 
 if __name__ == '__main__':
