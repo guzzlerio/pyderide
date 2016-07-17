@@ -2,3 +2,4 @@ cachetools==1.1.6
 nose
 pylint
 autopep8
+coverage

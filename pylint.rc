@@ -12,7 +12,7 @@
 #rcfile=
 
 # Profiled execution.
-profile=no
+profile=yes
 
 # Add <file or directory> to the black list. It should be a base name, not a
 # path. You may set this option multiple times.
