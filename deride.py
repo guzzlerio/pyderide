@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""Deride
+
+A mocking package with a fluent interface
+
+"""
 from cachetools import hashkey
 
 class ObjectKey:
@@ -7,6 +13,8 @@ class ObjectKey:
         return hashkey(*args, **kwds)
 
 class Invocation:
+        
+    
 
     def __init__(self, name, *args, **kwargs):
         self.name = name
@@ -81,9 +89,9 @@ class CallAssertions:
     def with_args_strict(self, *args):
         for invocation in self.invocations:
             results=[]
-            for arg in args:
+            for _ in args:
                 found=False
-                for index, item in enumerate(invocation.args):
+                for index, _ in enumerate(invocation.args):
                     if len(invocation.args) == len(args) \
                             and invocation.args[index] == args[index]:
                         found=True
@@ -138,6 +146,7 @@ class MockActions:
 
     def to_do_this(self, func):
         def to_do_func(original):
+            del original
             return func
         self.__action__ = to_do_func
 
@@ -151,7 +160,9 @@ class MockActions:
 
     def to_raise(self, throwable):
         def raise_func(original):
+            del original
             def override(*args, **kwargs):
+                del args, kwargs
                 raise throwable
             return override
         self.__action__ = raise_func
@@ -183,17 +194,17 @@ class MockActions:
 
 class Setup:
 
-    def __init__(self):
-        self.actions = {}
+  def __init__(self):
+    self.actions = {}
 
-    def __getattr__(self, name):
-        if name not in self.actions:
-            self.actions[name] = MockActions()
+  def __getattr__(self, name):
+      if name not in self.actions:
+          self.actions[name] = MockActions()
 
-        return self.actions[name]
+      return self.actions[name]
 
-    def action_for(self, name, original, *args, **kwds):
-        return self.actions[name].action(original, *args, **kwds)
+  def action_for(self, name, original, *args, **kwds):
+      return self.actions[name].action(original, *args, **kwds)
 
 class Wrapper:
 

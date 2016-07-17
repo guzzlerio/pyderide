@@ -223,9 +223,9 @@ class TestDeride(unittest.TestCase):
         bob = Person('bob')
         alice = Person('alice')
         bob = self.deride.wrap(bob)
-        bob.setup.greet.to_raise(StandardError('something went wrong'))
+        bob.setup.greet.to_raise(Exception('something went wrong'))
 
-        with self.assertRaises(StandardError):
+        with self.assertRaises(Exception):
             bob.greet(alice)
 
     def test_to_intercept_with(self):
