@@ -181,8 +181,13 @@ class CallStats(object):
         self.invocations = invocations
         self.called = CallAssertions(invocations)
 
-    def invocation(self, n):
-        return CallAssertions([self.invocations[n]])
+    def invocation(self, index):
+        """
+        Returns the specific invocation for the supplied index including
+        all of the expectation functions attached e.g. with_arg,
+        with_args etc...
+        """
+        return CallAssertions([self.invocations[index]])
 
 
 class Expectations(object):
