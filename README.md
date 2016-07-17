@@ -1,5 +1,7 @@
 #pyderide
 
+[![Build Status](https://travis-ci.org/REAANDREW/pyderide.svg?branch=master)](https://travis-ci.org/REAANDREW/pyderide)
+
 Python implementation of Deride
 
 The following list is taken from the [Deride](https://github.com/guzzlerio/deride) node.js homepage.  Some of the methods are marked with **N/A** as they are not applicable for python due to language differences.
