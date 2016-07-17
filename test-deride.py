@@ -321,5 +321,18 @@ class TestDeride(unittest.TestCase):
         self.assertTrue(Logger.has_message('bob'))
         self.assertEqual(len(Logger.messages), 2)
 
+    def test_invocations_access(self):
+        bob = Person('bob')
+        alice = Person('alice')
+        jack = Person('jack')
+
+        bob = self.deride.wrap(bob)
+        bob.greet(jack)
+        bob.greet(alice)
+        bob.greet(bob)
+        bob.expect.greet.invocation(0).with_arg(jack)
+        bob.expect.greet.invocation(1).with_arg(alice)
+        bob.expect.greet.invocation(2).with_arg(bob)
+
 if __name__ == '__main__':
     unittest.main()

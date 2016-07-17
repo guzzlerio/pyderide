@@ -178,7 +178,11 @@ class CallStats(object):
     """
 
     def __init__(self, invocations):
+        self.invocations = invocations
         self.called = CallAssertions(invocations)
+
+    def invocation(self, n):
+        return CallAssertions([self.invocations[n]])
 
 
 class Expectations(object):

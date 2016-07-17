@@ -57,7 +57,7 @@ Currently excluding:
 - [x] obj.expect.method.called.withArgs(args) (renamed to `with_args`)
 - [ ] obj.expect.method.called.withMatch(pattern) 
 - [x] obj.expect.method.called.matchExactly(args) (renamed to `with_args_strict`)
-- [ ] obj.expect.method.invocation(n)
+- [x] obj.expect.method.invocation(n)
 
 ### Reset methods
 
@@ -74,8 +74,8 @@ Currently excluding:
 - [ ] obj.setup.method.toEmit(event, args) **N/A**
 - [ ] obj.setup.method.toCallbackWith(args) **N/A**
 - [ ] obj.setup.method.toTimeWarp(milliseconds) **N/A**
-- [x] obj.setup.method.toIntercept(func) (renamed to `to_intercept`)
-- [ ] obj.setup.method.when(args|function)
+- [x] obj.setup.method.toIntercept(func) (renamed to `to_intercept_with`)
+- [x] obj.setup.method.when(args|function)
    - [x] .toDoThis
    - [x] .toReturn
    - [ ] .toRejectWith **N/A**
@@ -84,6 +84,6 @@ Currently excluding:
    - [ ] .toEmit **N/A**
    - [ ] .toCallbackWith  **N/A**
    - [ ] .toTimeWarp **N/A**
-   - [x] .toIntercept(func) (renamed to `to_intercept`)
+   - [x] .toIntercept(func) (renamed to `to_intercept_with`)
 
 
