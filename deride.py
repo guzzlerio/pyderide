@@ -6,25 +6,28 @@ A mocking package with a fluent interface
 """
 from cachetools import hashkey
 
+
 class ObjectKey:
 
     @staticmethod
     def value(*args, **kwds):
         return hashkey(*args, **kwds)
 
+
 class Invocation:
-        
-    
 
     def __init__(self, name, *args, **kwargs):
         self.name = name
         self.args = args
         self.kwargs = kwargs
 
+
 class Arguments:
+
     def __init__(self, args, kwds):
         self.args = args
         self.kwds = kwds
+
 
 class CallAssertions:
 
@@ -33,9 +36,9 @@ class CallAssertions:
         self.invocations = invocations
 
     def __times_error__(self, msg):
-            msg = '{msg}. times={calls}' \
-                    .format(msg=msg, calls=self.number)
-            return AssertionError(msg)
+        msg = '{msg}. times={calls}' \
+            .format(msg=msg, calls=self.number)
+        return AssertionError(msg)
 
     def times(self, number):
         if self.number != number:
@@ -66,47 +69,48 @@ class CallAssertions:
     def never(self):
         self.times(0)
 
-    #TODO: Make this more pythonic using list comprehensions and predicates
+    # TODO: Make this more pythonic using list comprehensions and predicates
     def with_arg(self, arg):
         self.with_args(arg)
 
-    #TODO: Make this more pythonic using list comprehensions and predicates
+    # TODO: Make this more pythonic using list comprehensions and predicates
     def with_args(self, *args):
         for invocation in self.invocations:
-            results=[]
+            results = []
             for arg in args:
-                found=False
+                found = False
                 for invocation_arg in invocation.args:
                     if invocation_arg == arg:
-                        found=True
+                        found = True
                         break
                 results = results + [found]
             if all(results):
                 return
         raise AssertionError('invocation matching arguments not found')
 
-    #TODO: Make this more pythonic using list comprehensions and predicates
+    # TODO: Make this more pythonic using list comprehensions and predicates
     def with_args_strict(self, *args):
         for invocation in self.invocations:
-            results=[]
+            results = []
             for _ in args:
-                found=False
+                found = False
                 for index, _ in enumerate(invocation.args):
                     if len(invocation.args) == len(args) \
                             and invocation.args[index] == args[index]:
-                        found=True
+                        found = True
                         break
                 results = results + [found]
             if all(results):
                 return
 
         raise AssertionError('invocation matching arguments not found')
-        
+
 
 class CallStats:
 
     def __init__(self, invocations):
         self.called = CallAssertions(invocations)
+
 
 class Expectations:
 
@@ -133,6 +137,7 @@ class Expectations:
 
         self.assertions[name] = CallStats(self.data[name])
 
+
 class MockActions:
 
     def __init__(self):
@@ -142,7 +147,7 @@ class MockActions:
     def original_func(self, original):
         def override(*args, **kwargs):
             return original(*args, **kwargs)
-        return override 
+        return override
 
     def to_do_this(self, func):
         def to_do_func(original):
@@ -161,6 +166,7 @@ class MockActions:
     def to_raise(self, throwable):
         def raise_func(original):
             del original
+
             def override(*args, **kwargs):
                 del args, kwargs
                 raise throwable
@@ -172,18 +178,18 @@ class MockActions:
             def override(*args, **kwargs):
                 func(*args, **kwargs)
                 return original(*args, **kwargs)
-            
+
             return override
         self.__action__ = intercept_func
 
     def action(self, original, *args, **kwds):
         try:
             key = ObjectKey.value(*args, **kwds)
-            result =  self.specifics[key].action(original, *args, **kwds)
+            result = self.specifics[key].action(original, *args, **kwds)
             return result
         except KeyError:
             pass
-        
+
         return self.__action__(original)
 
     def when(self, *args, **kwds):
@@ -194,17 +200,18 @@ class MockActions:
 
 class Setup:
 
-  def __init__(self):
-    self.actions = {}
+    def __init__(self):
+        self.actions = {}
 
-  def __getattr__(self, name):
-      if name not in self.actions:
-          self.actions[name] = MockActions()
+    def __getattr__(self, name):
+        if name not in self.actions:
+            self.actions[name] = MockActions()
 
-      return self.actions[name]
+        return self.actions[name]
 
-  def action_for(self, name, original, *args, **kwds):
-      return self.actions[name].action(original, *args, **kwds)
+    def action_for(self, name, original, *args, **kwds):
+        return self.actions[name].action(original, *args, **kwds)
+
 
 class Wrapper:
 
@@ -219,13 +226,13 @@ class Wrapper:
                 raise AttributeError('not a function')
 
             def call(*args, **kwds):
-                    func = getattr(self.target, name)
-                    try:
-                        func = self.setup.action_for(name, func, *args, **kwds)
-                    except KeyError:
-                        pass
-                    self.publish(Invocation(name, *args, **kwds))
-                    return func(*args, **kwds)
+                func = getattr(self.target, name)
+                try:
+                    func = self.setup.action_for(name, func, *args, **kwds)
+                except KeyError:
+                    pass
+                self.publish(Invocation(name, *args, **kwds))
+                return func(*args, **kwds)
             return call
         except AttributeError:
             return getattr(self.target, name)
@@ -233,8 +240,8 @@ class Wrapper:
     def publish(self, invocation):
         self.expect.notify(invocation)
 
+
 class Deride:
 
     def wrap(self, obj):
         return Wrapper(obj)
-

@@ -11,4 +11,4 @@ python:
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
-script: "nosetests && pylint *.py"
+script: "nosetests && pylint --rc-file pylint.rc *.py"
