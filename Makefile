@@ -7,7 +7,7 @@ lint:
 	pylint --rcfile pylint.rc deride.py 
 
 test:
-	nosetests --all-modules --traverse-namespace --with-coverage --cover-min-percentage=80 --cover-package=pyderide --cover-inclusive
+	nosetests --all-modules --traverse-namespace --with-coverage --cover-min-percentage=80 --cover-package=pyderide --cover-inclusive --cover-html
 
 format:
 	autopep8 --in-place --aggressive --aggressive deride.py
