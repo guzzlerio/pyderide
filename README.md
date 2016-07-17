@@ -21,14 +21,17 @@ The `Makefile` will ensure that:
 
 The following python versions are in scope for this package:
 
-- "2.6"
 - "2.7"
-- "3.2"
 - "3.3"
 - "3.4"
 - "3.5"
 - "3.5-dev" # 3.5 development branch
 - "nightly" # currently points to 3.6-dev
+
+Currently excluding:
+
+- "2.6" won't work with the cachetools package
+- "3.2" won't work with the coverage package
 
 ## Project
 
