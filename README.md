@@ -84,6 +84,6 @@ Currently excluding:
    - [ ] .toEmit **N/A**
    - [ ] .toCallbackWith  **N/A**
    - [ ] .toTimeWarp **N/A**
-   - [ ] .toIntercept(func) (renamed to `to_intercept`)
+   - [x] .toIntercept(func) (renamed to `to_intercept`)
 
 

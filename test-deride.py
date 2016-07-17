@@ -12,6 +12,10 @@ class Logger:
     def has_message(msg):
         return msg in Logger.messages
 
+    @staticmethod
+    def clear():
+        Logger.messages = []
+
 Logger.messages = []
 
 
@@ -42,6 +46,7 @@ class TestDeride(unittest.TestCase):
 
     def setUp(self):
         self.deride = Deride()
+        Logger.clear()
 
     def test_called_times(self):
         andy = self.deride.wrap(Person('Andy'))
@@ -293,6 +298,28 @@ class TestDeride(unittest.TestCase):
             bob.greet(alice)
 
         self.assertEquals(bob.greet(bob), 'hello bob')
+
+    def test_specific_to_intercept_with(self):
+        bob = Person('bob')
+        alice = Person('alice')
+        bob = self.deride.wrap(bob)
+
+        def intercept_for_bob(*args, **kwargs):
+            del args, kwargs
+            Logger.log('bob')
+
+        def intercept_for_alice(*args, **kwargs):
+            del args, kwargs
+            Logger.log('alice')
+
+        bob.setup.greet.to_intercept_with(intercept_for_bob)
+        bob.setup.greet.when(alice).to_intercept_with(intercept_for_alice)
+
+        self.assertEquals(bob.greet(alice), 'hello alice')
+        self.assertEquals(bob.greet(bob), 'hello bob')
+        self.assertTrue(Logger.has_message('alice'))
+        self.assertTrue(Logger.has_message('bob'))
+        self.assertEqual(len(Logger.messages), 2)
 
 if __name__ == '__main__':
     unittest.main()
