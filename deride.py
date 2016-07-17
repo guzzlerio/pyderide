@@ -7,14 +7,14 @@ A mocking package with a fluent interface
 from cachetools import hashkey
 
 
-class ObjectKey:
+class ObjectKey(object):
 
     @staticmethod
     def value(*args, **kwds):
         return hashkey(*args, **kwds)
 
 
-class Invocation:
+class Invocation(object):
 
     def __init__(self, name, *args, **kwargs):
         self.name = name
@@ -22,14 +22,14 @@ class Invocation:
         self.kwargs = kwargs
 
 
-class Arguments:
+class Arguments(object):
 
     def __init__(self, args, kwds):
         self.args = args
         self.kwds = kwds
 
 
-class CallAssertions:
+class CallAssertions(object):
 
     def __init__(self, invocations):
         self.number = len(invocations)
@@ -106,13 +106,13 @@ class CallAssertions:
         raise AssertionError('invocation matching arguments not found')
 
 
-class CallStats:
+class CallStats(object):
 
     def __init__(self, invocations):
         self.called = CallAssertions(invocations)
 
 
-class Expectations:
+class Expectations(object):
 
     def __init__(self):
         self.data = {}
@@ -138,7 +138,7 @@ class Expectations:
         self.assertions[name] = CallStats(self.data[name])
 
 
-class MockActions:
+class MockActions(object):
 
     def __init__(self):
         self.__action__ = self.original_func
@@ -198,7 +198,7 @@ class MockActions:
         return self.specifics[key]
 
 
-class Setup:
+class Setup(object):
 
     def __init__(self):
         self.actions = {}
@@ -213,7 +213,7 @@ class Setup:
         return self.actions[name].action(original, *args, **kwds)
 
 
-class Wrapper:
+class Wrapper(object):
 
     def __init__(self, obj):
         self.target = obj
@@ -241,7 +241,7 @@ class Wrapper:
         self.expect.notify(invocation)
 
 
-class Deride:
+class Deride(object):
 
     def wrap(self, obj):
         return Wrapper(obj)
