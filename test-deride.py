@@ -282,6 +282,17 @@ class TestDeride(unittest.TestCase):
         self.assertEquals(bob.greet(alice), 'yo yo alice')
         self.assertEquals(bob.greet(bob), 'yo bob')
 
+    def test_specific_to_raise(self):
+        bob = Person('bob')
+        alice = Person('alice')
+        bob = self.deride.wrap(bob)
+
+        bob.setup.greet.when(alice).to_raise(Exception('something went wrong'))
+
+        with self.assertRaises(Exception):
+            bob.greet(alice)
+
+        self.assertEquals(bob.greet(bob), 'hello bob')
 
 if __name__ == '__main__':
     unittest.main()

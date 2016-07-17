@@ -57,6 +57,7 @@ Currently excluding:
 - [x] obj.expect.method.called.withArgs(args) (renamed to `with_args`)
 - [ ] obj.expect.method.called.withMatch(pattern) 
 - [x] obj.expect.method.called.matchExactly(args) (renamed to `with_args_strict`)
+- [ ] obj.expect.method.invocation(n)
 
 ### Reset methods
 
@@ -65,23 +66,24 @@ Currently excluding:
 
 ### Setup methods
 
-- [x] obj.setup.method.toDoThis(func) (renamed 
-- [x] obj.setup.method.toReturn(value)
+- [x] obj.setup.method.toDoThis(func) (renamed to `to_do_this`)
+- [x] obj.setup.method.toReturn(value) (renamed to `to_return`)
 - [ ] obj.setup.method.toResolveWith(value) **N/A**
 - [ ] obj.setup.method.toRejectWith(value) **N/A**
 - [x] obj.setup.method.toThrow(message) (renamed to `to_raise`)
-- [ ] obj.setup.method.toEmit(event, args)
+- [ ] obj.setup.method.toEmit(event, args) **N/A**
 - [ ] obj.setup.method.toCallbackWith(args) **N/A**
 - [ ] obj.setup.method.toTimeWarp(milliseconds) **N/A**
+- [x] obj.setup.method.toIntercept(func) (renamed to `to_intercept`)
 - [ ] obj.setup.method.when(args|function)
-   - [ ] .toDoThis
+   - [x] .toDoThis
    - [x] .toReturn
    - [ ] .toRejectWith **N/A**
    - [ ] .toResolveWith **N/A**
-   - [ ] .toThrow
-   - [ ] .toEmit
+   - [x] .toThrow (renamed to `to_raise`)
+   - [ ] .toEmit **N/A**
    - [ ] .toCallbackWith  **N/A**
    - [ ] .toTimeWarp **N/A**
-- [x] obj.setup.method.toIntercept(func)
+   - [ ] .toIntercept(func) (renamed to `to_intercept`)
 
 
