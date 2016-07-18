@@ -1,6 +1,6 @@
 #pyderide
 
-[![Build Status](https://travis-ci.org/REAANDREW/pyderide.svg?branch=master)](https://travis-ci.org/REAANDREW/pyderide)
+[![Build Status](https://travis-ci.org/guzzlerio/pyderide.svg?branch=master)](https://travis-ci.org/guzzlerio/pyderide)
 
 Python implementation of Deride
 
